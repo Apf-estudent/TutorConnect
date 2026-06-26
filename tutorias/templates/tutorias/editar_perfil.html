@@ -1,0 +1,35 @@
+{% extends 'tutorias/base.html' %}
+
+{% block title %}Editar Perfil | TutorConnect{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm p-4 mt-5">
+            <h3 class="text-center mb-4">Editar mi Perfil</h3>
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="mb-3 text-center">
+                    <label class="form-label d-block fw-bold mb-3">Tu Rol Actual</label>
+                    <div class="d-flex justify-content-center gap-3">
+                        
+                        <input type="radio" class="btn-check" name="rol" id="edit-estudiante" value="estudiante" {% if perfil.rol == 'estudiante' %}checked{% endif %}>
+                        <label class="btn btn-outline-primary px-4 py-2" for="edit-estudiante">
+                            👨‍🎓 Estudiante
+                        </label>
+
+                        <input type="radio" class="btn-check" name="rol" id="edit-tutor" value="tutor" {% if perfil.rol == 'tutor' %}checked{% endif %}>
+                        <label class="btn btn-outline-primary px-4 py-2" for="edit-tutor">
+                            👨‍🏫 Tutor
+                        </label>
+                        
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-4">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

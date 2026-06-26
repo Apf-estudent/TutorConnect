@@ -1,0 +1,33 @@
+{% extends 'tutorias/base.html' %}
+
+{% block title %}Tutores de {{ materia.nombre }} - TutorConnect{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Tutores disponibles para "{{ materia.nombre }}"</h2>
+    
+    <a href="{% url 'materias' %}" class="btn btn-secondary btn-sm mb-4">Volver a las materias</a>
+
+    <div class="row">
+        {% for tutor in tutores %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ tutor.nombre }}</h5>
+                        <p class="card-text">{{ tutor.descripcion }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <small class="text-muted">Contacto: {{ tutor.email }}</small>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    Por el momento no hay tutores registrados para la materia {{ materia.nombre }}.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

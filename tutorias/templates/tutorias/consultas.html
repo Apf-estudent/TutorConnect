@@ -1,0 +1,70 @@
+{% extends 'tutorias/base.html' %}
+
+{% block title %}Mis Consultas | TutorConnect{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm p-4">
+            <h4 class="mb-3 nav-boton-text">📩 Nueva Consulta</h4>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">¿A qué tutor va dirigida?</label>
+                    <select name="tutor_id" class="form-select" required>
+                        <option value="" disabled selected>-- Selecciona un Tutor --</option>
+                        {% for tutor in tutores %}
+                            <option value="{{ tutor.id }}">
+                                {{ tutor.nombre }} ({% if tutor.materia %}{{ tutor.materia.nombre }}{% endif %})
+                            </option>
+                        {% empty %}
+                            <option value="" disabled>No hay tutores registrados actualmente</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Asunto / Tema</label>
+                    <input type="text" class="form-select" placeholder="Ej: Duda con las ecuaciones cuadráticas" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Escribe tu duda en detalle</label>
+                    <textarea class="form-control" rows="4" placeholder="Escribe aquí tu pregunta..." required></textarea>
+                </div>
+                <button type="submit" class="btn nav-coments w-100">Enviar Consulta</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h4 class="mb-3">Historial de mis Consultas</h4>
+        
+        {% for consulta in consultas %}
+            <div class="card mb-3 shadow-sm border-{% if consulta.estado == 'pendiente' %}warning{% else %}success{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title m-0 fw-bold">{{ consulta.asunto }}</h5>
+                        
+                        <span class="badge {% if consulta.estado == 'pendiente' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                            {{ consulta.get_estado_display }}
+                        </span>
+                    </div>
+                    
+                    <p class="card-text text-muted small">Enviada a: Tutor {{ consulta.tutor.nombre }}</p>
+                    <p class="card-text">{{ consulta.pregunta }}</p>
+                    
+                    {% if consulta.estado == 'respondida' and consulta.respuesta_tutor %}
+                        <div class="bg-light p-2 rounded mt-2 border-start border-success border-3">
+                            <small class="fw-bold text-success">Respuesta del Tutor:</small>
+                            <p class="m-0 small">{{ consulta.respuesta_tutor }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert nav-coments shadow-sm">
+                Aún no has realizado ninguna consulta. ¡Usa el formulario de la izquierda para enviar la primera!
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

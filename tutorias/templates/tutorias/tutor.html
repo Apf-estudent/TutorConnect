@@ -1,0 +1,59 @@
+{% extends 'tutorias/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{% if tutor %}Editar mis datos de Tutor{% else %}Postularse como Tutor{% endif %}</h2>
+    
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label class="form-label">Nombre Completo</label>
+            <input type="text" name="nombre" class="form-control" value="{{ tutor.nombre|default:'' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Materia a dictar (Principal)</label>
+            <select name="materia_id" class="form-select" required>
+                <option value="" disabled {% if not tutor.materia %}selected{% endif %}>-- Selecciona tu materia principal --</option>
+                {% for materia in materias %}
+                    <option value="{{ materia.id }}" {% if tutor.materia.id == materia.id %}selected{% endif %}>
+                        {{ materia.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Segunda materia (Opcional)</label>
+            <select name="materia_id_2" class="form-select">
+                <option value="" {% if not tutor.materia_2 %}selected{% endif %}>-- Ninguna / Seleccionar más tarde --</option>
+                {% for materia in materias %}
+                    <option value="{{ materia.id }}" {% if tutor.materia_2.id == materia.id %}selected{% endif %}>
+                        {{ materia.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripción / Experiencia</label>
+            <textarea name="descripcion" class="form-control" rows="3" required>{{ tutor.descripcion|default:'' }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contacto</label>
+            <input type="descripcion" class="form-control" value="{{ tutor.contacto|default:'' }}"required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Correo electrónico de contacto</label>
+            <input type="email" name="email" class="form-control" value="{{ tutor.email|default:'' }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            {% if tutor %}Guardar Cambios{% else %}Enviar Postulación{% endif %}
+        </button>
+    </form>
+</div>
+{% endblock %}

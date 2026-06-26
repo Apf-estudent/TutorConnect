@@ -1,0 +1,34 @@
+{% extends 'tutorias/base.html' %}
+
+{% block title %}Inicio | TutorConnect{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12" style="text-align: center;">
+        <h1 class="mb-3">Bienvenido a</h1>
+        <h1 class="mb-4 text-border-dark">TutorConnect</h1>
+    </div>
+    <div class="col-md-12" style="text-align: center;">
+        <div class="mb-4 alert alert-info">¡Un espacio para reforzar todas tus materias, dentro de tutorías personalizadas!</div>
+    </div>
+</div>
+
+
+<div class="row">
+    {% for tutor in tutores %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ tutor.nombre }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Materia: {{ tutor.materia.nombre }}</h6>
+                    <p class="card-text">{{ tutor.descripcion }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <small class="text-muted">Contacto: {{ tutor.email }}</small>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+    {% endfor %}
+</div>
+{% endblock %}

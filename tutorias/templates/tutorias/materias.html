@@ -1,0 +1,50 @@
+{% extends 'tutorias/base.html' %}
+
+{% block title %}Materias - TutorConnect{% endblock %}
+
+{% block content %}
+    <h1>Materias</h1>
+    <p>Acá vas a ver el listado de materias disponibles.</p>
+
+    <div class="row g-4 mt-2">
+        {% for m in materias_lista %}
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ m.nombre }}</h5>
+                    <a href="{% url 'ver_tutores_materia' m.id %}" class="btn nav-coments w-100 mt-3">Ver Tutores</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No hay materias creadas en el administrador todavía.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <hr class="my-5">
+
+
+    {% if materia_filtro %}
+        <a href="{% url 'materias' %}" class="btn btn-secondary btn-sm mb-4">Ver todas las materias</a>
+    {% endif %}
+
+    <div class="row">
+        {% for tutor in tutores %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ tutor.nombre }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Materia: {{ tutor.materia.nombre }}</h6>
+                        <p class="card-text">{{ tutor.descripcion }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <small class="text-muted">Contacto: {{ tutor.email }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+   {% endblock %}
